@@ -7,6 +7,7 @@ import coil.ImageLoaderFactory
 import coil.disk.DiskCache
 import coil.memory.MemoryCache
 import com.autophoto.ai.data.local.AppDatabase
+import com.autophoto.ai.data.remote.SupabaseConfig
 import com.autophoto.ai.data.repository.PhotoRepository
 import com.autophoto.ai.domain.PhotoProcessor
 
@@ -15,6 +16,9 @@ class AppContainer(context: Context) {
     private val database = AppDatabase.get(context)
     val repository = PhotoRepository(context.applicationContext, database.photoDao())
     val photoProcessor = PhotoProcessor()
+
+    /** Client Supabase (lazy: baru dibuat saat dipakai pertama kali). */
+    val supabase by lazy { SupabaseConfig.createClient() }
 }
 
 class AutoPhotoApp : Application(), ImageLoaderFactory {
